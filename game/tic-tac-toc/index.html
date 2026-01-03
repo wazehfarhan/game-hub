@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - GameHub</title>
+    <link rel="stylesheet" href="../../assets/css/game-layout.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="game-header">
+            <h2>Tic Tac Toe</h2>
+            <button class="back-btn" onclick="window.parent.postMessage('backToHub', '*')">
+                <i class="fas fa-arrow-left"></i> Back to Hub
+            </button>
+        </div>
+        
+        <div class="game-content">
+            <div class="game-info">
+                <div class="score-board">
+                    <div class="player" id="playerX">
+                        <span class="player-icon">X</span>
+                        <span class="player-score" id="scoreX">0</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="player" id="playerO">
+                        <span class="player-icon">O</span>
+                        <span class="player-score" id="scoreO">0</span>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <div class="status" id="gameStatus">Player X's Turn</div>
+                    <div class="control-buttons">
+                        <button id="resetBtn" class="control-btn">
+                            <i class="fas fa-redo"></i> Reset Game
+                        </button>
+                        <button id="newGameBtn" class="control-btn">
+                            <i class="fas fa-plus-circle"></i> New Match
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-board">
+                <div class="board" id="ticTacToeBoard">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+            
+            <div class="game-options">
+                <div class="option-group">
+                    <label>Game Mode:</label>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="pvp">Player vs Player</button>
+                        <button class="mode-btn" data-mode="pvc">Player vs AI</button>
+                    </div>
+                </div>
+                <div class="option-group">
+                    <label>AI Difficulty:</label>
+                    <select id="aiDifficulty" class="difficulty-select">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>How to Play:</h3>
+                <ul class="instructions-list">
+                    <li>Players take turns placing X and O marks on the 3x3 grid</li>
+                    <li>The first player to get 3 of their marks in a row (horizontally, vertically, or diagonally) wins</li>
+                    <li>If all 9 squares are filled without a winner, the game is a draw</li>
+                    <li>In Player vs AI mode, you play as X and the computer plays as O</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

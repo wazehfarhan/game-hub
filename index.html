@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Play Free Mini Games</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/hub.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    Game<span class="logo-accent">Hub</span>
+                </h1>
+                <p class="tagline">Play 20+ Free Mini Games Online</p>
+            </div>
+            
+            <div class="header-controls">
+                <button id="soundToggle" class="control-btn" title="Toggle Sound">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="themeToggle" class="control-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="hub-main">
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>Ready to Play?</h2>
+                    <p>Select from our collection of awesome mini games. No downloads, no sign-ups!</p>
+                </div>
+            </section>
+
+            <section class="games-section">
+                <h2 class="section-title">
+                    <i class="fas fa-dice"></i>
+                    All Games
+                </h2>
+                
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Games will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <div class="loader-container" id="loader">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>Loading Game...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <p>GameHub &copy; 2024 | Built with HTML, CSS & JavaScript</p>
+            <p class="footer-note">All games work directly in your browser. No backend required!</p>
+        </footer>
+    </div>
+
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/game-loader.js"></script>
+</body>
+</html>
