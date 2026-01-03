@@ -210,8 +210,10 @@
     box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
 }
 
-.play-btn:active {
-    transform: translateY(0);
+.play-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
 }
 
 /* Footer */

@@ -2,8 +2,7 @@
 class GameHub {
     constructor() {
         this.games = [];
-        this.currentGame = null;
-        this.utils = window.utils || {};
+        this.utils = GameHubUtils;
         
         this.init();
     }
@@ -51,42 +50,6 @@ class GameHub {
                 category: 'casual',
                 color: '#fd79a8',
                 implemented: true
-            },
-            {
-                id: 'memory-match',
-                title: 'Memory Match',
-                description: 'Test your memory by matching pairs of cards.',
-                icon: 'fas fa-brain',
-                difficulty: 'medium',
-                players: '1-2',
-                playTime: '5-15 min',
-                category: 'memory',
-                color: '#a29bfe',
-                implemented: false
-            },
-            {
-                id: 'number-guessing',
-                title: 'Number Guessing',
-                description: 'Guess the secret number with hints in limited attempts.',
-                icon: 'fas fa-question-circle',
-                difficulty: 'easy',
-                players: '1',
-                playTime: '2-5 min',
-                category: 'puzzle',
-                color: '#74b9ff',
-                implemented: false
-            },
-            {
-                id: '2048',
-                title: '2048',
-                description: 'Slide numbered tiles to combine them and reach 2048.',
-                icon: 'fas fa-th',
-                difficulty: 'hard',
-                players: '1',
-                playTime: '10-30 min',
-                category: 'puzzle',
-                color: '#00cec9',
-                implemented: false
             }
         ];
     }
@@ -108,11 +71,6 @@ class GameHub {
                 this.loadGame(gameId);
             }
         });
-        
-        // Back button event
-        document.addEventListener('backToHub', () => {
-            this.returnToHub();
-        });
     }
     
     renderGames() {
@@ -122,7 +80,7 @@ class GameHub {
         gamesGrid.innerHTML = '';
         
         this.games.forEach(game => {
-            const highScore = this.utils.getHighScore ? this.utils.getHighScore(game.id) : 0;
+            const highScore = this.utils.getHighScore(game.id);
             const gameCard = this.createGameCard(game, highScore);
             gamesGrid.appendChild(gameCard);
         });
@@ -134,8 +92,8 @@ class GameHub {
         card.dataset.gameId = game.id;
         
         card.innerHTML = `
-            <div class="game-thumbnail">
-                <i class="${game.icon}"></i>
+            <div class="game-thumbnail" style="background: linear-gradient(135deg, ${game.color}40, ${game.color}20);">
+                <i class="${game.icon}" style="color: ${game.color}"></i>
             </div>
             <div class="game-content">
                 <h3 class="game-title">${game.title}</h3>
@@ -146,47 +104,45 @@ class GameHub {
                     ${highScore > 0 ? `<span><i class="fas fa-trophy"></i> ${highScore}</span>` : ''}
                 </div>
                 <button class="play-btn" data-game-id="${game.id}">
-                    <i class="fas fa-${game.implemented ? 'play' : 'code'}"></i>
-                    ${game.implemented ? 'Play Now' : 'Coming Soon'}
+                    <i class="fas fa-play"></i> Play Now
                 </button>
             </div>
         `;
         
-        if (!game.implemented) {
-            card.querySelector('.play-btn').disabled = true;
-            card.querySelector('.play-btn').style.opacity = '0.6';
-            card.querySelector('.play-btn').style.cursor = 'not-allowed';
-        }
-        
         return card;
     }
     
-    loadGame(gameId) {
+    async loadGame(gameId) {
         const game = this.games.find(g => g.id === gameId);
         if (!game) {
             alert('Game not found!');
             return;
         }
         
-        if (!game.implemented) {
-            alert(`${game.title} is coming soon!`);
-            return;
-        }
-        
-        if (this.utils.playSound) {
-            this.utils.playSound('click');
-        }
+        this.utils.playSound('click');
         
         // Hide hub, show game container
         document.getElementById('hubMain').classList.add('hidden');
         const gameContainer = document.getElementById('gameContainer');
         gameContainer.classList.remove('hidden');
         
-        // Load game
-        const gameLoader = new GameLoader();
-        gameLoader.loadGame(gameId, gameContainer);
+        // Load game using iframe
+        gameContainer.innerHTML = `
+            <div style="position: relative; height: 100%;">
+                <button id="backToHub" class="back-btn" style="position: absolute; top: 20px; right: 20px; z-index: 1001;">
+                    <i class="fas fa-arrow-left"></i> Back to Hub
+                </button>
+                <iframe src="games/${gameId}/index.html" 
+                        style="width: 100%; height: 100%; border: none;"
+                        title="${game.title}">
+                </iframe>
+            </div>
+        `;
         
-        this.currentGame = game;
+        // Add back button event
+        document.getElementById('backToHub').addEventListener('click', () => {
+            this.returnToHub();
+        });
     }
     
     returnToHub() {
@@ -200,7 +156,7 @@ class GameHub {
         // Refresh games to update high scores
         this.renderGames();
         
-        this.currentGame = null;
+        this.utils.playSound('click');
     }
 }
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors - GameHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1><i class="fas fa-hand-scissors"></i> Rock Paper Scissors</h1>
+        </div>
+        
+        <div class="game-stats">
+            <div class="stat player">
+                <div class="stat-label">Player</div>
+                <div class="stat-value" id="playerScore">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Round</div>
+                <div class="stat-value" id="round">1/5</div>
+            </div>
+            <div class="stat computer">
+                <div class="stat-label">Computer</div>
+                <div class="stat-value" id="computerScore">0</div>
+            </div>
+        </div>
+        
+        <div class="choices-container">
+            <div class="choices">
+                <button class="choice-btn" data-choice="rock">
+                    <i class="fas fa-hand-rock"></i>
+                    <span>Rock</span>
+                </button>
+                <button class="choice-btn" data-choice="paper">
+                    <i class="fas fa-hand-paper"></i>
+                    <span>Paper</span>
+                </button>
+                <button class="choice-btn" data-choice="scissors">
+                    <i class="fas fa-hand-scissors"></i>
+                    <span>Scissors</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="battle-area">
+            <div class="choice-display player-choice" id="playerChoice">
+                <div class="placeholder">?</div>
+            </div>
+            <div class="vs">VS</div>
+            <div class="choice-display computer-choice" id="computerChoice">
+                <div class="placeholder">?</div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result">
+            <h3>Choose your move!</h3>
+        </div>
+        
+        <div class="game-controls">
+            <div class="control-group">
+                <label for="difficulty">AI Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="rounds">Rounds to Win:</label>
+                <select id="rounds">
+                    <option value="3">3</option>
+                    <option value="5" selected>5</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="game-buttons">
+            <button class="btn btn-primary" id="nextRoundBtn" disabled>
+                <i class="fas fa-forward"></i> Next Round
+            </button>
+            <button class="btn btn-secondary" id="resetGameBtn">
+                <i class="fas fa-redo"></i> New Game
+            </button>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+            <ul>
+                <li>Choose <strong>Rock</strong>, <strong>Paper</strong>, or <strong>Scissors</strong></li>
+                <li><strong>Rock</strong> beats <strong>Scissors</strong> (rock crushes scissors)</li>
+                <li><strong>Paper</strong> beats <strong>Rock</strong> (paper covers rock)</li>
+                <li><strong>Scissors</strong> beats <strong>Paper</strong> (scissors cut paper)</li>
+                <li>First to win the majority of rounds wins the game!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

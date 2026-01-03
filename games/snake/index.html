@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - GameHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1><i class="fas fa-snake"></i> Snake Game</h1>
+        </div>
+        
+        <div class="game-stats">
+            <div class="stat">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat highlight">
+                <div class="stat-label">High Score</div>
+                <div class="stat-value" id="highScore">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Length</div>
+                <div class="stat-value" id="length">1</div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+        </div>
+        
+        <div class="game-status" id="gameStatus">Press SPACE to Start</div>
+        
+        <div class="game-controls">
+            <div class="speed-control">
+                <label for="speedRange">Speed:</label>
+                <input type="range" id="speedRange" min="1" max="10" value="5">
+                <span id="speedValue">5</span>
+            </div>
+            
+            <div class="color-control">
+                <label for="snakeColor">Snake Color:</label>
+                <select id="snakeColor">
+                    <option value="#00b894">Green</option>
+                    <option value="#6c5ce7">Purple</option>
+                    <option value="#fd79a8">Pink</option>
+                    <option value="#fdcb6e">Yellow</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="game-buttons">
+            <button class="btn btn-primary" id="startBtn">
+                <i class="fas fa-play"></i> Start Game
+            </button>
+            <button class="btn btn-secondary" id="restartBtn">
+                <i class="fas fa-redo"></i> Restart
+            </button>
+        </div>
+        
+        <div class="mobile-controls">
+            <button class="mobile-btn" id="upBtn"><i class="fas fa-arrow-up"></i></button>
+            <div class="horizontal-controls">
+                <button class="mobile-btn" id="leftBtn"><i class="fas fa-arrow-left"></i></button>
+                <button class="mobile-btn" id="downBtn"><i class="fas fa-arrow-down"></i></button>
+                <button class="mobile-btn" id="rightBtn"><i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+            <ul>
+                <li>Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to control the snake</li>
+                <li>Eat the <strong>red food</strong> to grow longer and earn 10 points</li>
+                <li>Avoid hitting the <strong>walls</strong> or the <strong>snake's body</strong></li>
+                <li>The game gets faster as your score increases</li>
+                <li>Try to beat your high score!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

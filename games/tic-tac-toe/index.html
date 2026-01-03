@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - GameHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1><i class="fas fa-times"></i> Tic Tac Toe</h1>
+        </div>
+        
+        <div class="game-stats">
+            <div class="stat">
+                <div class="stat-label">Player X</div>
+                <div class="stat-value" id="scoreX">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Round</div>
+                <div class="stat-value" id="round">1</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Player O</div>
+                <div class="stat-value" id="scoreO">0</div>
+            </div>
+        </div>
+        
+        <div class="game-status" id="gameStatus">Player X's Turn</div>
+        
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-cell="0"></div>
+            <div class="cell" data-cell="1"></div>
+            <div class="cell" data-cell="2"></div>
+            <div class="cell" data-cell="3"></div>
+            <div class="cell" data-cell="4"></div>
+            <div class="cell" data-cell="5"></div>
+            <div class="cell" data-cell="6"></div>
+            <div class="cell" data-cell="7"></div>
+            <div class="cell" data-cell="8"></div>
+        </div>
+        
+        <div class="game-controls">
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="pvp">
+                    <i class="fas fa-user-friends"></i> Player vs Player
+                </button>
+                <button class="mode-btn" data-mode="pvc">
+                    <i class="fas fa-robot"></i> Player vs AI
+                </button>
+            </div>
+            
+            <div class="ai-controls">
+                <label for="aiDifficulty">AI Difficulty:</label>
+                <select id="aiDifficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="game-buttons">
+            <button class="btn btn-primary" id="resetBtn">
+                <i class="fas fa-redo"></i> Reset Game
+            </button>
+            <button class="btn btn-secondary" id="newGameBtn">
+                <i class="fas fa-plus-circle"></i> New Match
+            </button>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+            <ul>
+                <li>Players take turns placing X and O on the 3×3 grid</li>
+                <li>First to get 3 in a row (horizontal, vertical, or diagonal) wins</li>
+                <li>If all squares are filled, it's a draw</li>
+                <li>In Player vs AI mode, you play as X and computer as O</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
