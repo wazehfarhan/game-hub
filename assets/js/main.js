@@ -2,10 +2,8 @@
 class GameHub {
     constructor() {
         this.games = [];
-        this.filteredGames = [];
-        this.currentSearch = '';
-        this.currentCategory = 'all';
-        this.utils = window.GameHubUtils;
+        this.currentGame = null;
+        this.utils = window.utils || {};
         
         this.init();
     }
@@ -79,114 +77,6 @@ class GameHub {
                 implemented: false
             },
             {
-                id: 'whack-a-mole',
-                title: 'Whack-a-Mole',
-                description: 'Hit the moles as they pop up from their holes!',
-                icon: 'fas fa-hat-wizard',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '3-5 min',
-                category: 'arcade',
-                color: '#fdcb6e',
-                implemented: false
-            },
-            {
-                id: 'pong',
-                title: 'Pong',
-                description: 'Classic table tennis simulation. Play against AI.',
-                icon: 'fas fa-table-tennis',
-                difficulty: 'medium',
-                players: '1-2',
-                playTime: '5-10 min',
-                category: 'sports',
-                color: '#55efc4',
-                implemented: false
-            },
-            {
-                id: 'flappy-bird',
-                title: 'Flappy Bird',
-                description: 'Navigate through pipes without crashing. How far can you go?',
-                icon: 'fas fa-dove',
-                difficulty: 'hard',
-                players: '1',
-                playTime: '1-5 min',
-                category: 'arcade',
-                color: '#81ecec',
-                implemented: false
-            },
-            {
-                id: 'hangman',
-                title: 'Hangman',
-                description: 'Guess the word before the hangman is complete.',
-                icon: 'fas fa-user',
-                difficulty: 'medium',
-                players: '1-2',
-                playTime: '3-7 min',
-                category: 'word',
-                color: '#ffeaa7',
-                implemented: false
-            },
-            {
-                id: 'breakout',
-                title: 'Breakout',
-                description: 'Break all bricks with a bouncing ball and paddle.',
-                icon: 'fas fa-basketball-ball',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '5-10 min',
-                category: 'arcade',
-                color: '#fab1a0',
-                implemented: false
-            },
-            {
-                id: 'dice-roll',
-                title: 'Dice Roll',
-                description: 'Roll virtual dice for board games or gambling fun.',
-                icon: 'fas fa-dice-five',
-                difficulty: 'easy',
-                players: '1-4',
-                playTime: '1-3 min',
-                category: 'casual',
-                color: '#ff7675',
-                implemented: false
-            },
-            {
-                id: 'quiz-game',
-                title: 'Quiz Game',
-                description: 'Test your knowledge with trivia questions.',
-                icon: 'fas fa-question',
-                difficulty: 'medium',
-                players: '1-4',
-                playTime: '5-15 min',
-                category: 'trivia',
-                color: '#fd79a8',
-                implemented: false
-            },
-            {
-                id: 'simon-says',
-                title: 'Simon Says',
-                description: 'Repeat the color sequence correctly.',
-                icon: 'fas fa-memory',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '3-7 min',
-                category: 'memory',
-                color: '#a29bfe',
-                implemented: false
-            },
-            {
-                id: 'click-speed-test',
-                title: 'Click Speed Test',
-                description: 'How fast can you click in 10 seconds?',
-                icon: 'fas fa-mouse-pointer',
-                difficulty: 'easy',
-                players: '1',
-                playTime: '1 min',
-                category: 'skill',
-                color: '#74b9ff',
-                implemented: false
-            },
-            {
                 id: '2048',
                 title: '2048',
                 description: 'Slide numbered tiles to combine them and reach 2048.',
@@ -197,91 +87,11 @@ class GameHub {
                 category: 'puzzle',
                 color: '#00cec9',
                 implemented: false
-            },
-            {
-                id: 'space-invaders',
-                title: 'Space Invaders',
-                description: 'Classic arcade shooter. Defend against alien invaders!',
-                icon: 'fas fa-space-shuttle',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '5-10 min',
-                category: 'arcade',
-                color: '#6c5ce7',
-                implemented: false
-            },
-            {
-                id: 'sudoku',
-                title: 'Sudoku',
-                description: 'Fill the 9x9 grid with numbers following Sudoku rules.',
-                icon: 'fas fa-border-all',
-                difficulty: 'hard',
-                players: '1',
-                playTime: '10-30 min',
-                category: 'puzzle',
-                color: '#00b894',
-                implemented: false
-            },
-            {
-                id: 'tetris',
-                title: 'Tetris',
-                description: 'Arrange falling blocks to complete lines.',
-                icon: 'fas fa-cubes',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '5-15 min',
-                category: 'arcade',
-                color: '#fd79a8',
-                implemented: false
-            },
-            {
-                id: 'chess',
-                title: 'Chess',
-                description: 'Classic chess game against AI.',
-                icon: 'fas fa-chess',
-                difficulty: 'hard',
-                players: '1',
-                playTime: '10-60 min',
-                category: 'strategy',
-                color: '#a29bfe',
-                implemented: false
-            },
-            {
-                id: 'minesweeper',
-                title: 'Minesweeper',
-                description: 'Find all mines without triggering any.',
-                icon: 'fas fa-bomb',
-                difficulty: 'medium',
-                players: '1',
-                playTime: '5-15 min',
-                category: 'puzzle',
-                color: '#ff7675',
-                implemented: false
             }
         ];
-        
-        this.filteredGames = [...this.games];
     }
     
     setupEventListeners() {
-        // Search input
-        const searchInput = document.getElementById('gameSearch');
-        if (searchInput) {
-            searchInput.addEventListener('input', this.utils.debounce((e) => {
-                this.currentSearch = e.target.value.toLowerCase();
-                this.filterGames();
-            }, 300));
-        }
-        
-        // Category filter
-        const categoryFilter = document.getElementById('categoryFilter');
-        if (categoryFilter) {
-            categoryFilter.addEventListener('change', (e) => {
-                this.currentCategory = e.target.value;
-                this.filterGames();
-            });
-        }
-        
         // Game card clicks
         document.addEventListener('click', (e) => {
             const playBtn = e.target.closest('.play-btn');
@@ -289,6 +99,7 @@ class GameHub {
                 e.stopPropagation();
                 const gameId = playBtn.dataset.gameId;
                 this.loadGame(gameId);
+                return;
             }
             
             const gameCard = e.target.closest('.game-card');
@@ -304,37 +115,14 @@ class GameHub {
         });
     }
     
-    filterGames() {
-        this.filteredGames = this.games.filter(game => {
-            const matchesSearch = game.title.toLowerCase().includes(this.currentSearch) ||
-                                 game.description.toLowerCase().includes(this.currentSearch) ||
-                                 game.category.toLowerCase().includes(this.currentSearch);
-            
-            const matchesCategory = this.currentCategory === 'all' || game.category === this.currentCategory;
-            
-            return matchesSearch && matchesCategory;
-        });
-        
-        this.renderGames();
-    }
-    
     renderGames() {
         const gamesGrid = document.getElementById('gamesGrid');
-        const noGamesFound = document.getElementById('noGamesFound');
-        
         if (!gamesGrid) return;
         
         gamesGrid.innerHTML = '';
         
-        if (this.filteredGames.length === 0) {
-            if (noGamesFound) noGamesFound.classList.remove('hidden');
-            return;
-        }
-        
-        if (noGamesFound) noGamesFound.classList.add('hidden');
-        
-        this.filteredGames.forEach(game => {
-            const highScore = this.utils.getHighScore(game.id);
+        this.games.forEach(game => {
+            const highScore = this.utils.getHighScore ? this.utils.getHighScore(game.id) : 0;
             const gameCard = this.createGameCard(game, highScore);
             gamesGrid.appendChild(gameCard);
         });
@@ -345,27 +133,17 @@ class GameHub {
         card.className = 'game-card';
         card.dataset.gameId = game.id;
         
-        // Set thumbnail color
-        const thumbnailStyle = game.implemented ? 
-            `background: linear-gradient(135deg, ${game.color}40, ${game.color}20);` :
-            `background: linear-gradient(135deg, var(--bg-secondary), var(--border-color));`;
-        
         card.innerHTML = `
-            <div class="game-thumbnail" style="${thumbnailStyle}">
-                <i class="${game.icon}" style="color: ${game.implemented ? game.color : 'var(--text-muted)'}"></i>
+            <div class="game-thumbnail">
+                <i class="${game.icon}"></i>
             </div>
             <div class="game-content">
-                <div class="game-title">
-                    <h3>${game.title}</h3>
-                    <span class="game-difficulty difficulty-${game.difficulty}">
-                        ${game.difficulty}
-                    </span>
-                </div>
+                <h3 class="game-title">${game.title}</h3>
                 <p class="game-description">${game.description}</p>
                 <div class="game-meta">
                     <span><i class="fas fa-users"></i> ${game.players}</span>
                     <span><i class="fas fa-clock"></i> ${game.playTime}</span>
-                    ${highScore > 0 ? `<span class="high-score"><i class="fas fa-trophy"></i> ${this.utils.formatScore(highScore)}</span>` : ''}
+                    ${highScore > 0 ? `<span><i class="fas fa-trophy"></i> ${highScore}</span>` : ''}
                 </div>
                 <button class="play-btn" data-game-id="${game.id}">
                     <i class="fas fa-${game.implemented ? 'play' : 'code'}"></i>
@@ -383,54 +161,50 @@ class GameHub {
         return card;
     }
     
-    async loadGame(gameId) {
+    loadGame(gameId) {
         const game = this.games.find(g => g.id === gameId);
         if (!game) {
-            this.utils.showMessage('Error', 'Game not found!');
+            alert('Game not found!');
             return;
         }
         
         if (!game.implemented) {
-            this.utils.showMessage('Coming Soon', `${game.title} is currently under development. Check back soon!`);
+            alert(`${game.title} is coming soon!`);
             return;
         }
         
-        this.utils.showLoader();
-        this.utils.playSound('click');
-        
-        try {
-            // Hide hub content
-            document.querySelector('.hub-main').classList.add('hidden');
-            
-            // Load game using GameLoader
-            const gameLoader = new GameLoader();
-            await gameLoader.loadGame(gameId);
-            
-        } catch (error) {
-            console.error('Error loading game:', error);
-            this.utils.showMessage('Error', `Failed to load ${game.title}. Please try again.`);
-            this.returnToHub();
-        } finally {
-            this.utils.hideLoader();
+        if (this.utils.playSound) {
+            this.utils.playSound('click');
         }
+        
+        // Hide hub, show game container
+        document.getElementById('hubMain').classList.add('hidden');
+        const gameContainer = document.getElementById('gameContainer');
+        gameContainer.classList.remove('hidden');
+        
+        // Load game
+        const gameLoader = new GameLoader();
+        gameLoader.loadGame(gameId, gameContainer);
+        
+        this.currentGame = game;
     }
     
     returnToHub() {
-        // Remove game container if exists
-        const gameContainer = document.getElementById('game-container');
-        if (gameContainer) {
-            gameContainer.remove();
-        }
+        // Show hub, hide game container
+        document.getElementById('hubMain').classList.remove('hidden');
+        document.getElementById('gameContainer').classList.add('hidden');
         
-        // Show hub content
-        document.querySelector('.hub-main').classList.remove('hidden');
+        // Clear game container
+        document.getElementById('gameContainer').innerHTML = '';
         
         // Refresh games to update high scores
         this.renderGames();
+        
+        this.currentGame = null;
     }
 }
 
-// Initialize GameHub when DOM is loaded
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.gameHub = new GameHub();
 });

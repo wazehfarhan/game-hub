@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Play 20+ Free Mini Games</title>
+    <title>GameHub - Play Free Games</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/hub.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -18,9 +15,9 @@
             <div class="header-content">
                 <h1 class="logo">
                     <i class="fas fa-gamepad"></i>
-                    <span class="logo-text">Game<span class="logo-accent">Hub</span></span>
+                    Game<span class="logo-accent">Hub</span>
                 </h1>
-                <p class="tagline">Play 20+ Free Mini Games Online</p>
+                <p class="tagline">Play Free Mini Games Online</p>
             </div>
             
             <div class="header-controls">
@@ -33,188 +30,36 @@
             </div>
         </header>
 
-        <main class="hub-main">
+        <main class="hub-main" id="hubMain">
             <section class="hero">
                 <div class="hero-content">
                     <h2>Ready to Play?</h2>
                     <p>Select from our collection of awesome mini games. No downloads, no sign-ups!</p>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <i class="fas fa-gamepad"></i>
-                            <span>20+ Games</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-user-friends"></i>
-                            <span>1-4 Players</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-clock"></i>
-                            <span>Instant Play</span>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             <section class="games-section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-dice"></i>
-                        All Games
-                    </h2>
-                    <div class="section-controls">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="gameSearch" placeholder="Search games...">
-                        </div>
-                        <select id="categoryFilter" class="filter-select">
-                            <option value="all">All Categories</option>
-                            <option value="strategy">Strategy</option>
-                            <option value="arcade">Arcade</option>
-                            <option value="puzzle">Puzzle</option>
-                            <option value="casual">Casual</option>
-                            <option value="word">Word</option>
-                            <option value="trivia">Trivia</option>
-                            <option value="memory">Memory</option>
-                            <option value="skill">Skill</option>
-                            <option value="sports">Sports</option>
-                        </select>
-                    </div>
-                </div>
+                <h2 class="section-title">
+                    <i class="fas fa-dice"></i>
+                    Available Games
+                </h2>
                 
                 <div class="games-grid" id="gamesGrid">
-                    <!-- Games will be loaded here dynamically -->
-                </div>
-                
-                <div class="no-games-found hidden" id="noGamesFound">
-                    <i class="fas fa-search"></i>
-                    <h3>No Games Found</h3>
-                    <p>Try adjusting your search or filter</p>
+                    <!-- Games will be loaded here -->
                 </div>
             </section>
         </main>
 
-        <div class="loader-container hidden" id="loader">
-            <div class="loader">
-                <div class="spinner"></div>
-                <p>Loading Game...</p>
-            </div>
-        </div>
-
         <footer class="main-footer">
-            <div class="footer-content">
-                <p>GameHub &copy; <span id="currentYear">2024</span> | Built with HTML, CSS & JavaScript</p>
-                <p class="footer-note">All games work directly in your browser. No backend required!</p>
-                <div class="footer-links">
-                    <a href="#" onclick="showAbout()">About</a>
-                    <span class="divider">•</span>
-                    <a href="#" onclick="showHowToPlay()">How to Play</a>
-                    <span class="divider">•</span>
-                    <a href="#" onclick="toggleFullscreen()" id="fullscreenBtn">Fullscreen</a>
-                </div>
-            </div>
+            <p>GameHub &copy; 2024 | Built with HTML, CSS & JavaScript</p>
+            <p>All games work directly in your browser!</p>
         </footer>
     </div>
 
-    <div class="modal-overlay hidden" id="aboutModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>About GameHub</h3>
-                <button class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
-            </div>
-            <div class="modal-content">
-                <p>GameHub is a collection of 20+ mini games built entirely with vanilla HTML, CSS, and JavaScript.</p>
-                <p>No frameworks, no libraries - just pure web technologies!</p>
-                <h4>Features:</h4>
-                <ul>
-                    <li>20+ Different Games</li>
-                    <li>Dark/Light Theme</li>
-                    <li>Sound Controls</li>
-                    <li>Local Storage for Scores</li>
-                    <li>Responsive Design</li>
-                    <li>No Downloads Required</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="howToModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>How to Play</h3>
-                <button class="modal-close" onclick="closeModal('howToModal')">&times;</button>
-            </div>
-            <div class="modal-content">
-                <h4>Getting Started:</h4>
-                <p>1. Browse games using the grid below</p>
-                <p>2. Click any game card to start playing</p>
-                <p>3. Use the "Back to Hub" button in games to return</p>
-                
-                <h4>Controls:</h4>
-                <p><i class="fas fa-volume-up"></i> Toggle sound on/off</p>
-                <p><i class="fas fa-moon"></i> Switch between dark/light theme</p>
-                <p><i class="fas fa-expand"></i> Toggle fullscreen mode</p>
-                
-                <h4>Game Features:</h4>
-                <p>• Each game saves your high scores locally</p>
-                <p>• Most games work on both desktop and mobile</p>
-                <p>• No account needed - play instantly!</p>
-            </div>
-        </div>
-    </div>
+    <!-- Game Container (hidden by default) -->
+    <div id="gameContainer" class="game-container hidden"></div>
 
     <script src="assets/js/utils.js"></script>
-    <script src="assets/js/main.js" type="module"></script>
-    <script>
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // Modal functions
-        function showAbout() {
-            event.preventDefault();
-            document.getElementById('aboutModal').classList.remove('hidden');
-        }
-        
-        function showHowToPlay() {
-            event.preventDefault();
-            document.getElementById('howToModal').classList.remove('hidden');
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-        
-        function toggleFullscreen() {
-            event.preventDefault();
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                });
-                document.getElementById('fullscreenBtn').innerHTML = '<i class="fas fa-compress"></i> Exit Fullscreen';
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    document.getElementById('fullscreenBtn').innerHTML = '<i class="fas fa-expand"></i> Fullscreen';
-                }
-            }
-        }
-        
-        // Close modals on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal-overlay').forEach(modal => {
-                    modal.classList.add('hidden');
-                });
-            }
-        });
-        
-        // Close modals when clicking outside
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    overlay.classList.add('hidden');
-                }
-            });
-        });
-    </script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

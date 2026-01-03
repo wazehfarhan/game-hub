@@ -1,4 +1,4 @@
-// GameHub Utilities
+// Utility Functions for GameHub
 
 class GameHubUtils {
     constructor() {
@@ -81,7 +81,7 @@ class GameHubUtils {
     playSound(type) {
         if (!this.soundEnabled) return;
         
-        // Create audio context for sound effects
+        // Simple beep sounds using Web Audio API
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioContext.createOscillator();
@@ -90,68 +90,96 @@ class GameHubUtils {
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            // Different sounds for different actions
+            // Different frequencies for different sounds
+            let frequency = 800;
+            let duration = 0.1;
+            
             switch(type) {
                 case 'click':
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.1);
+                    frequency = 800;
                     break;
-                    
-                case 'success':
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.3);
+                case 'win':
+                    frequency = 1200;
+                    duration = 0.3;
                     break;
-                    
-                case 'error':
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
-                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.2);
+                case 'lose':
+                    frequency = 400;
+                    duration = 0.2;
                     break;
-                    
                 case 'move':
-                    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.05);
+                    frequency = 600;
+                    duration = 0.05;
                     break;
             }
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
         } catch (e) {
-            console.log('Web Audio API not supported or blocked');
+            console.log('Sound not supported');
         }
     }
     
-    showLoader() {
-        const loader = document.getElementById('loader');
-        if (loader) {
-            loader.classList.remove('hidden');
-        }
+    getHighScore(gameId) {
+        const scores = JSON.parse(localStorage.getItem('gameHubScores') || '{}');
+        return scores[gameId] || 0;
     }
     
-    hideLoader() {
-        const loader = document.getElementById('loader');
-        if (loader) {
-            loader.classList.add('hidden');
-        }
+    saveHighScore(gameId, score) {
+        const scores = JSON.parse(localStorage.getItem('gameHubScores') || '{}');
+        scores[gameId] = Math.max(scores[gameId] || 0, score);
+        localStorage.setItem('gameHubScores', JSON.stringify(scores));
+        return scores[gameId];
     }
     
     showMessage(title, message, buttons = []) {
         return new Promise((resolve) => {
+            // Remove existing message if any
+            const existing = document.querySelector('.game-message');
+            if (existing) existing.remove();
+            
             const messageEl = document.createElement('div');
             messageEl.className = 'game-message';
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--bg-card);
+                padding: var(--spacing-xl);
+                border-radius: var(--border-radius);
+                border: 2px solid var(--border-color);
+                text-align: center;
+                z-index: 1100;
+                box-shadow: var(--shadow);
+                animation: popIn 0.3s ease;
+                max-width: 90%;
+                width: 400px;
+            `;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popIn {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
             messageEl.innerHTML = `
-                <h3 class="message-title">${title}</h3>
-                <p class="message-text">${message}</p>
-                <div class="message-buttons">
+                <h3 style="margin-bottom: var(--spacing-sm); color: var(--text-primary);">${title}</h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">${message}</p>
+                <div style="display: flex; gap: var(--spacing-sm); justify-content: center;">
                     ${buttons.map((btn, i) => 
                         `<button class="game-btn ${btn.class || 'game-btn-primary'}" data-action="${btn.action}">
                             ${btn.text}
@@ -172,45 +200,10 @@ class GameHubUtils {
         });
     }
     
-    getHighScore(gameId) {
-        const scores = JSON.parse(localStorage.getItem('gameHubScores') || '{}');
-        return scores[gameId] || 0;
-    }
-    
-    saveHighScore(gameId, score) {
-        const scores = JSON.parse(localStorage.getItem('gameHubScores') || '{}');
-        scores[gameId] = Math.max(scores[gameId] || 0, score);
-        localStorage.setItem('gameHubScores', JSON.stringify(scores));
-        return scores[gameId];
-    }
-    
-    formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-    
     formatScore(score) {
         return score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
-    
-    isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-    
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
 }
 
-// Initialize utilities
+// Initialize and export
 const utils = new GameHubUtils();
-window.GameHubUtils = utils;
