@@ -1,10 +1,11 @@
-// Main Application Controller
+// Main Game Hub Controller
 class GameHub {
     constructor() {
         this.games = [];
-        this.currentGame = null;
-        this.isSoundOn = true;
-        this.currentTheme = 'dark';
+        this.filteredGames = [];
+        this.currentSearch = '';
+        this.currentCategory = 'all';
+        this.utils = window.GameHubUtils;
         
         this.init();
     }
@@ -12,12 +13,10 @@ class GameHub {
     init() {
         this.loadGames();
         this.setupEventListeners();
-        this.loadPreferences();
         this.renderGames();
     }
     
     loadGames() {
-        // Game configuration data
         this.games = [
             {
                 id: 'tic-tac-toe',
@@ -27,7 +26,9 @@ class GameHub {
                 difficulty: 'easy',
                 players: '1-2',
                 playTime: '2-5 min',
-                category: 'Strategy'
+                category: 'strategy',
+                color: '#6c5ce7',
+                implemented: true
             },
             {
                 id: 'snake',
@@ -37,7 +38,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '5-10 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#00b894',
+                implemented: true
             },
             {
                 id: 'rock-paper-scissors',
@@ -47,7 +50,9 @@ class GameHub {
                 difficulty: 'easy',
                 players: '1',
                 playTime: '1-2 min',
-                category: 'Casual'
+                category: 'casual',
+                color: '#fd79a8',
+                implemented: true
             },
             {
                 id: 'memory-match',
@@ -57,7 +62,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1-2',
                 playTime: '5-15 min',
-                category: 'Puzzle'
+                category: 'memory',
+                color: '#a29bfe',
+                implemented: false
             },
             {
                 id: 'number-guessing',
@@ -67,7 +74,9 @@ class GameHub {
                 difficulty: 'easy',
                 players: '1',
                 playTime: '2-5 min',
-                category: 'Puzzle'
+                category: 'puzzle',
+                color: '#74b9ff',
+                implemented: false
             },
             {
                 id: 'whack-a-mole',
@@ -77,7 +86,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '3-5 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#fdcb6e',
+                implemented: false
             },
             {
                 id: 'pong',
@@ -87,7 +98,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1-2',
                 playTime: '5-10 min',
-                category: 'Sports'
+                category: 'sports',
+                color: '#55efc4',
+                implemented: false
             },
             {
                 id: 'flappy-bird',
@@ -97,7 +110,9 @@ class GameHub {
                 difficulty: 'hard',
                 players: '1',
                 playTime: '1-5 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#81ecec',
+                implemented: false
             },
             {
                 id: 'hangman',
@@ -107,7 +122,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1-2',
                 playTime: '3-7 min',
-                category: 'Word'
+                category: 'word',
+                color: '#ffeaa7',
+                implemented: false
             },
             {
                 id: 'breakout',
@@ -117,7 +134,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '5-10 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#fab1a0',
+                implemented: false
             },
             {
                 id: 'dice-roll',
@@ -127,7 +146,9 @@ class GameHub {
                 difficulty: 'easy',
                 players: '1-4',
                 playTime: '1-3 min',
-                category: 'Casual'
+                category: 'casual',
+                color: '#ff7675',
+                implemented: false
             },
             {
                 id: 'quiz-game',
@@ -137,7 +158,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1-4',
                 playTime: '5-15 min',
-                category: 'Trivia'
+                category: 'trivia',
+                color: '#fd79a8',
+                implemented: false
             },
             {
                 id: 'simon-says',
@@ -147,7 +170,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '3-7 min',
-                category: 'Memory'
+                category: 'memory',
+                color: '#a29bfe',
+                implemented: false
             },
             {
                 id: 'click-speed-test',
@@ -157,7 +182,9 @@ class GameHub {
                 difficulty: 'easy',
                 players: '1',
                 playTime: '1 min',
-                category: 'Skill'
+                category: 'skill',
+                color: '#74b9ff',
+                implemented: false
             },
             {
                 id: '2048',
@@ -167,7 +194,9 @@ class GameHub {
                 difficulty: 'hard',
                 players: '1',
                 playTime: '10-30 min',
-                category: 'Puzzle'
+                category: 'puzzle',
+                color: '#00cec9',
+                implemented: false
             },
             {
                 id: 'space-invaders',
@@ -177,7 +206,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '5-10 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#6c5ce7',
+                implemented: false
             },
             {
                 id: 'sudoku',
@@ -187,7 +218,9 @@ class GameHub {
                 difficulty: 'hard',
                 players: '1',
                 playTime: '10-30 min',
-                category: 'Puzzle'
+                category: 'puzzle',
+                color: '#00b894',
+                implemented: false
             },
             {
                 id: 'tetris',
@@ -197,7 +230,9 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '5-15 min',
-                category: 'Arcade'
+                category: 'arcade',
+                color: '#fd79a8',
+                implemented: false
             },
             {
                 id: 'chess',
@@ -207,7 +242,9 @@ class GameHub {
                 difficulty: 'hard',
                 players: '1',
                 playTime: '10-60 min',
-                category: 'Strategy'
+                category: 'strategy',
+                color: '#a29bfe',
+                implemented: false
             },
             {
                 id: 'minesweeper',
@@ -217,81 +254,39 @@ class GameHub {
                 difficulty: 'medium',
                 players: '1',
                 playTime: '5-15 min',
-                category: 'Puzzle'
+                category: 'puzzle',
+                color: '#ff7675',
+                implemented: false
             }
         ];
-    }
-    
-    renderGames() {
-        const gamesGrid = document.getElementById('gamesGrid');
-        if (!gamesGrid) return;
         
-        gamesGrid.innerHTML = '';
-        
-        this.games.forEach(game => {
-            const gameCard = this.createGameCard(game);
-            gamesGrid.appendChild(gameCard);
-        });
-    }
-    
-    createGameCard(game) {
-        const card = document.createElement('div');
-        card.className = 'game-card';
-        card.dataset.gameId = game.id;
-        
-        card.innerHTML = `
-            <div class="game-thumbnail">
-                <i class="${game.icon}"></i>
-            </div>
-            <div class="game-content">
-                <div class="game-title">
-                    <span>${game.title}</span>
-                    <span class="game-difficulty difficulty-${game.difficulty}">
-                        ${game.difficulty}
-                    </span>
-                </div>
-                <p class="game-description">${game.description}</p>
-                <div class="game-stats">
-                    <span class="game-stat">
-                        <i class="fas fa-users"></i>
-                        ${game.players}
-                    </span>
-                    <span class="game-stat">
-                        <i class="fas fa-clock"></i>
-                        ${game.playTime}
-                    </span>
-                    <span class="game-stat">
-                        <i class="fas fa-tag"></i>
-                        ${game.category}
-                    </span>
-                </div>
-                <button class="play-btn" data-game-id="${game.id}">
-                    <i class="fas fa-play"></i>
-                    Play Now
-                </button>
-            </div>
-        `;
-        
-        return card;
+        this.filteredGames = [...this.games];
     }
     
     setupEventListeners() {
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => this.toggleTheme());
+        // Search input
+        const searchInput = document.getElementById('gameSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', this.utils.debounce((e) => {
+                this.currentSearch = e.target.value.toLowerCase();
+                this.filterGames();
+            }, 300));
         }
         
-        // Sound toggle
-        const soundToggle = document.getElementById('soundToggle');
-        if (soundToggle) {
-            soundToggle.addEventListener('click', () => this.toggleSound());
+        // Category filter
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', (e) => {
+                this.currentCategory = e.target.value;
+                this.filterGames();
+            });
         }
         
         // Game card clicks
         document.addEventListener('click', (e) => {
             const playBtn = e.target.closest('.play-btn');
             if (playBtn) {
+                e.stopPropagation();
                 const gameId = playBtn.dataset.gameId;
                 this.loadGame(gameId);
             }
@@ -303,52 +298,125 @@ class GameHub {
             }
         });
         
-        // Back button from games
+        // Back button event
         document.addEventListener('backToHub', () => {
             this.returnToHub();
         });
     }
     
-    async loadGame(gameId) {
-        console.log(`Loading game: ${gameId}`);
+    filterGames() {
+        this.filteredGames = this.games.filter(game => {
+            const matchesSearch = game.title.toLowerCase().includes(this.currentSearch) ||
+                                 game.description.toLowerCase().includes(this.currentSearch) ||
+                                 game.category.toLowerCase().includes(this.currentSearch);
+            
+            const matchesCategory = this.currentCategory === 'all' || game.category === this.currentCategory;
+            
+            return matchesSearch && matchesCategory;
+        });
         
-        // Show loader
-        const loader = document.getElementById('loader');
-        if (loader) loader.classList.remove('hidden');
+        this.renderGames();
+    }
+    
+    renderGames() {
+        const gamesGrid = document.getElementById('gamesGrid');
+        const noGamesFound = document.getElementById('noGamesFound');
+        
+        if (!gamesGrid) return;
+        
+        gamesGrid.innerHTML = '';
+        
+        if (this.filteredGames.length === 0) {
+            if (noGamesFound) noGamesFound.classList.remove('hidden');
+            return;
+        }
+        
+        if (noGamesFound) noGamesFound.classList.add('hidden');
+        
+        this.filteredGames.forEach(game => {
+            const highScore = this.utils.getHighScore(game.id);
+            const gameCard = this.createGameCard(game, highScore);
+            gamesGrid.appendChild(gameCard);
+        });
+    }
+    
+    createGameCard(game, highScore) {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.dataset.gameId = game.id;
+        
+        // Set thumbnail color
+        const thumbnailStyle = game.implemented ? 
+            `background: linear-gradient(135deg, ${game.color}40, ${game.color}20);` :
+            `background: linear-gradient(135deg, var(--bg-secondary), var(--border-color));`;
+        
+        card.innerHTML = `
+            <div class="game-thumbnail" style="${thumbnailStyle}">
+                <i class="${game.icon}" style="color: ${game.implemented ? game.color : 'var(--text-muted)'}"></i>
+            </div>
+            <div class="game-content">
+                <div class="game-title">
+                    <h3>${game.title}</h3>
+                    <span class="game-difficulty difficulty-${game.difficulty}">
+                        ${game.difficulty}
+                    </span>
+                </div>
+                <p class="game-description">${game.description}</p>
+                <div class="game-meta">
+                    <span><i class="fas fa-users"></i> ${game.players}</span>
+                    <span><i class="fas fa-clock"></i> ${game.playTime}</span>
+                    ${highScore > 0 ? `<span class="high-score"><i class="fas fa-trophy"></i> ${this.utils.formatScore(highScore)}</span>` : ''}
+                </div>
+                <button class="play-btn" data-game-id="${game.id}">
+                    <i class="fas fa-${game.implemented ? 'play' : 'code'}"></i>
+                    ${game.implemented ? 'Play Now' : 'Coming Soon'}
+                </button>
+            </div>
+        `;
+        
+        if (!game.implemented) {
+            card.querySelector('.play-btn').disabled = true;
+            card.querySelector('.play-btn').style.opacity = '0.6';
+            card.querySelector('.play-btn').style.cursor = 'not-allowed';
+        }
+        
+        return card;
+    }
+    
+    async loadGame(gameId) {
+        const game = this.games.find(g => g.id === gameId);
+        if (!game) {
+            this.utils.showMessage('Error', 'Game not found!');
+            return;
+        }
+        
+        if (!game.implemented) {
+            this.utils.showMessage('Coming Soon', `${game.title} is currently under development. Check back soon!`);
+            return;
+        }
+        
+        this.utils.showLoader();
+        this.utils.playSound('click');
         
         try {
-            // Load game module
-            const gameData = this.games.find(g => g.id === gameId);
-            if (!gameData) throw new Error('Game not found');
-            
-            this.currentGame = gameData;
-            
-            // Create game container
-            const gameContainer = document.createElement('div');
-            gameContainer.id = 'game-container';
-            gameContainer.className = 'game-container';
-            
             // Hide hub content
             document.querySelector('.hub-main').classList.add('hidden');
             
-            // Add game container to body
-            document.querySelector('.container').appendChild(gameContainer);
-            
-            // Use GameLoader to load the game
+            // Load game using GameLoader
             const gameLoader = new GameLoader();
             await gameLoader.loadGame(gameId);
             
         } catch (error) {
             console.error('Error loading game:', error);
-            alert(`Failed to load ${gameId}. Please try again.`);
+            this.utils.showMessage('Error', `Failed to load ${game.title}. Please try again.`);
+            this.returnToHub();
         } finally {
-            // Hide loader
-            if (loader) loader.classList.add('hidden');
+            this.utils.hideLoader();
         }
     }
     
     returnToHub() {
-        // Remove game container
+        // Remove game container if exists
         const gameContainer = document.getElementById('game-container');
         if (gameContainer) {
             gameContainer.remove();
@@ -357,75 +425,8 @@ class GameHub {
         // Show hub content
         document.querySelector('.hub-main').classList.remove('hidden');
         
-        this.currentGame = null;
-    }
-    
-    toggleTheme() {
-        this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', this.currentTheme);
-        localStorage.setItem('gameHubTheme', this.currentTheme);
-        
-        // Update button icon
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            const icon = themeToggle.querySelector('i');
-            if (icon) {
-                icon.className = this.currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-            }
-        }
-    }
-    
-    toggleSound() {
-        this.isSoundOn = !this.isSoundOn;
-        localStorage.setItem('gameHubSound', this.isSoundOn);
-        
-        // Update button icon
-        const soundToggle = document.getElementById('soundToggle');
-        if (soundToggle) {
-            const icon = soundToggle.querySelector('i');
-            if (icon) {
-                icon.className = this.isSoundOn ? 'fas fa-volume-up' : 'fas fa-volume-mute';
-            }
-        }
-        
-        // Emit sound change event
-        const event = new CustomEvent('soundChange', { 
-            detail: { isSoundOn: this.isSoundOn } 
-        });
-        document.dispatchEvent(event);
-    }
-    
-    loadPreferences() {
-        // Load theme
-        const savedTheme = localStorage.getItem('gameHubTheme');
-        if (savedTheme) {
-            this.currentTheme = savedTheme;
-            document.documentElement.setAttribute('data-theme', this.currentTheme);
-            
-            // Update theme button icon
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                const icon = themeToggle.querySelector('i');
-                if (icon) {
-                    icon.className = this.currentTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-                }
-            }
-        }
-        
-        // Load sound preference
-        const savedSound = localStorage.getItem('gameHubSound');
-        if (savedSound !== null) {
-            this.isSoundOn = savedSound === 'true';
-            
-            // Update sound button icon
-            const soundToggle = document.getElementById('soundToggle');
-            if (soundToggle) {
-                const icon = soundToggle.querySelector('i');
-                if (icon) {
-                    icon.className = this.isSoundOn ? 'fas fa-volume-up' : 'fas fa-volume-mute';
-                }
-            }
-        }
+        // Refresh games to update high scores
+        this.renderGames();
     }
 }
 
